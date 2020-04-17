@@ -97,7 +97,55 @@ class SortingRobot:
         Sort the robot's list.
         """
         # Fill this out
-        pass
+
+        # Understand
+        # Robot can only hold one number at a time and requires one command to move left or right each time
+        # Robot can compare two numbers at its current index and will return -1, 0, 1 based off the comparison
+        # Robot has a binary light that can be manipulated on or off. Could use to indicate when something happens.
+
+        # Plan
+        # Starting at the first index of the list
+        # Want to move from the left to right and compare one number at a time. If the first number that the robot holds
+        # is bigger: swap, go back to the left, swap with the currently empty value, move back right, and be ready for
+        # the next iteration of the loop
+        # Once no swaps have been detected using the robots light as an on/off signal, the loop will break
+        # [5 4 3] -> [none, 4, 3] -> [none, 5, 3] -> [4, 5, 3] -> [4, none, 3] -> [4, none, 5] -> [4, 3, 5] -> Loop
+        # [none, 3, 5] -> [none, 4, 5] -> [3, 4, 5] -> [3, none, 5] -> [3, 4, 5] -> Loops one more time because
+        # there was a swap during this loop
+
+
+
+
+
+        while True:
+  
+         if self.can_move_right():
+            self.swap_item()
+            self.move_right()
+            if self.compare_item() > 0:
+             self.swap_item()
+             self.move_left()
+             self.swap_item()
+             self.move_right()
+             self.set_light_on()
+            else:
+              self.move_left()
+              self.swap_item()
+              self.move_right()
+
+         if not self.can_move_right():
+            while self.can_move_left():
+              self.move_left()
+              if not self.can_move_left():
+                break
+
+            if self.light_is_on():
+             self.set_light_off()
+            else: 
+             break
+         print(self._list)
+
+
 
 
 if __name__ == "__main__":
@@ -105,8 +153,8 @@ if __name__ == "__main__":
     # with `python robot_sort.py`
 
     l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
-
     robot = SortingRobot(l)
 
     robot.sort()
     print(robot._list)
+   
